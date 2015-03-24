@@ -19,4 +19,11 @@ public class NewPostsFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_new_posts, null);
 		return view;
 	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+
+	}
 }

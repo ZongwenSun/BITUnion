@@ -3,6 +3,7 @@ package cn.edu.bit.bitunion;
 import android.app.Application;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import cn.edu.bit.bitunion.entities.LoginInfo;
 import cn.edu.bit.bitunion.global.LoginManager;
 import cn.edu.bit.bitunion.global.NetworkManager;
 import cn.edu.bit.bitunion.network.RequestQueueManager;
@@ -12,6 +13,7 @@ public class MainApplication extends Application {
 	LoginManager mLoginManager = null;
 	NetworkManager mNetworkManager = null;
 	RequestQueueManager mRequestQueueManager = null;
+	private LoginInfo loginInfo;
 
 	@Override
 	public void onCreate() {
@@ -31,6 +33,14 @@ public class MainApplication extends Application {
 		super.onTerminate();
 		mRequestQueueManager.stop();
 		unregisterReceiver(mNetworkManager);
+	}
+
+	public LoginInfo getLoginInfo() {
+		return loginInfo;
+	}
+
+	public void setLoginInfo(LoginInfo mLoginInfo) {
+		this.loginInfo = mLoginInfo;
 	}
 
 }

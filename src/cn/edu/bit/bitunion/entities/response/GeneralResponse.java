@@ -1,4 +1,4 @@
-package cn.edu.bit.bitunion.entities;
+package cn.edu.bit.bitunion.entities.response;
 
 public class GeneralResponse {
 	private String result;

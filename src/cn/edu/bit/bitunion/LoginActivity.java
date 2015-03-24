@@ -1,6 +1,5 @@
 package cn.edu.bit.bitunion;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
@@ -8,8 +7,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import cn.edu.bit.bitunion.entities.LoginResponse;
 import cn.edu.bit.bitunion.entities.RequestJsonFactory;
+import cn.edu.bit.bitunion.entities.response.LoginResponse;
 import cn.edu.bit.bitunion.global.GlobalUrls;
 import cn.edu.bit.bitunion.global.LoginManager;
 import cn.edu.bit.bitunion.network.RequestQueueManager;
@@ -52,16 +51,6 @@ public class LoginActivity extends BaseActivity {
 					ToastHelper.showToast(LoginActivity.this, "用户名和密码不能为空!");
 				} else {
 					if (checkConnection()) {
-						JSONObject jsonRequest = new JSONObject();
-						try {
-							jsonRequest.put("action", "login");
-							jsonRequest.put("username", username);
-							jsonRequest.put("password", password);
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-						GlobalUrls.setInSchool(false);
 						showLoadingDialog();
 						RequestQueueManager.getInstance(getAppContext()).postJsonRequest(GlobalUrls.getLoginUrl(), RequestJsonFactory.loginJson(username, password),
 								new Listener<JSONObject>() {
@@ -73,6 +62,7 @@ public class LoginActivity extends BaseActivity {
 										LoginResponse loginResponse = JSON.parseObject(response.toString(), LoginResponse.class);
 										if (loginResponse.getResult().equalsIgnoreCase("success")) {
 											LoginManager.getInstance(getAppContext()).saveLoginInfo(username, password);
+											getAppContext().setLoginInfo(loginResponse.toLoginInfo());
 											jumpToPage(HomeActivity.class, null, true);
 										} else {
 											LogUtils.log(TAG, response.toString());
