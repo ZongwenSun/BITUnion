@@ -13,7 +13,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 public class RequestQueueManager {
-	private static final int MY_SOCKET_TIMEOUT_MS = 10000;
+	private static final int MY_SOCKET_TIMEOUT_MS = 3000;
 	private static RequestQueueManager instance = null;
 	private RequestQueue mRequestQueue = null;
 
