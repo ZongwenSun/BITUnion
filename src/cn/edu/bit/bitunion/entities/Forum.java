@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Forum {
-	private TYPE type;
+	private String type;
 	private String fid;
 	private String name;
 	private String fup;
 	private String icon;
-	private String descriptioin;
+	private String description;
 	private String moderator;
 	private String threads;
 	private String posts;
@@ -20,17 +20,32 @@ public class Forum {
 
 	}
 
-	public Forum(TYPE type, String fid, String name) {
+	public Forum(String type, String fid, String name) {
 		setType(type);
 		setFid(fid);
 		setName(name);
 	}
 
-	public TYPE getType() {
+	public Forum(String type, String fid, String name, String fup, String icon,
+			String description, String moderator, String threads, String posts,
+			String onlines) {
+		setType(type);
+		setFid(fid);
+		setName(name);
+		setFup(fup);
+		setIcon(icon);
+		setDescription(description);
+		setModerator(moderator);
+		setThreads(threads);
+		setPosts(posts);
+		setOnlines(onlines);
+	}
+
+	public String getType() {
 		return type;
 	}
 
-	public void setType(TYPE type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -66,12 +81,12 @@ public class Forum {
 		this.icon = icon;
 	}
 
-	public String getDescriptioin() {
-		return descriptioin;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDescriptioin(String descriptioin) {
-		this.descriptioin = descriptioin;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getModerator() {
