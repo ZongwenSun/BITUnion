@@ -100,10 +100,11 @@ public class BaseActivity extends FragmentActivity {
 		if (progressDialog == null) {
 			progressDialog = new ProgressDialog(this, R.style.dialog);
 		}
-
-		progressDialog.setCanceledOnTouchOutside(false);
-		progressDialog.setMessage("ÇëµÈ´ý...");
-		progressDialog.show();
+		if (!progressDialog.isShowing()) {
+			progressDialog.setCanceledOnTouchOutside(false);
+			progressDialog.setMessage("ÇëµÈ´ý...");
+			progressDialog.show();
+		}
 	}
 
 	public void hideLoadingDialog() {

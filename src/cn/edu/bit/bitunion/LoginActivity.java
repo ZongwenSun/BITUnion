@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import cn.edu.bit.bitunion.entities.RequestJsonFactory;
-import cn.edu.bit.bitunion.entities.response.LoginResponse;
+import cn.edu.bit.bitunion.entities.ResponseParser;
 import cn.edu.bit.bitunion.global.GlobalUrls;
 import cn.edu.bit.bitunion.global.LoginManager;
 import cn.edu.bit.bitunion.network.RequestQueueManager;
@@ -16,7 +16,6 @@ import cn.edu.bit.bitunion.tools.LogUtils;
 import cn.edu.bit.bitunion.tools.StringUtils;
 import cn.edu.bit.bitunion.tools.ToastHelper;
 
-import com.alibaba.fastjson.JSON;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
@@ -59,10 +58,10 @@ public class LoginActivity extends BaseActivity {
 									public void onResponse(JSONObject response) {
 										// TODO Auto-generated method stub
 										hideLoadingDialog();
-										LoginResponse loginResponse = JSON.parseObject(response.toString(), LoginResponse.class);
-										if (loginResponse.getResult().equalsIgnoreCase("success")) {
+
+										if (ResponseParser.isSuccess(response)) {
 											LoginManager.getInstance(getAppContext()).saveLoginInfo(username, password);
-											getAppContext().setLoginInfo(loginResponse.toLoginInfo());
+											getAppContext().setLoginInfo(ResponseParser.parseLoginResponse(response));
 											jumpToPage(HomeActivity.class, null, true);
 										} else {
 											LogUtils.log(TAG, response.toString());

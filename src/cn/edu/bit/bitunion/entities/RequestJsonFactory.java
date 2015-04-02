@@ -40,4 +40,15 @@ public class RequestJsonFactory {
 		}
 		return json;
 	}
+
+	public static JSONObject newPostsJson(String username, String session) {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("username", username);
+			json.put("session", session);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
 }
