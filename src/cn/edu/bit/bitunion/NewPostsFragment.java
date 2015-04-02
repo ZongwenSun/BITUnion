@@ -1,6 +1,7 @@
 package cn.edu.bit.bitunion;
 
-import org.json.JSONException;
+import java.util.List;
+
 import org.json.JSONObject;
 
 import android.os.Bundle;
@@ -8,12 +9,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import cn.edu.bit.bitunion.entities.LoginInfo;
+import cn.edu.bit.bitunion.entities.NewPost;
 import cn.edu.bit.bitunion.entities.RequestJsonFactory;
+import cn.edu.bit.bitunion.entities.ResponseParser;
 import cn.edu.bit.bitunion.global.GlobalUrls;
 import cn.edu.bit.bitunion.network.RequestQueueManager;
-import cn.edu.bit.bitunion.tools.LogUtils;
 import cn.edu.bit.bitunion.tools.ToastHelper;
+import cn.edu.bit.bitunion.widgets.NewPostsListAdapter;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -21,15 +25,14 @@ import com.android.volley.VolleyError;
 
 public class NewPostsFragment extends Fragment {
 	private static final String TAG = "NewPostsFragment";
-
-	public NewPostsFragment() {
-		// TODO Auto-generated constructor stub
-	}
+	private ListView listView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.fragment_new_posts, null);
+		listView = (ListView) view.findViewById(R.id.new_posts_listview);
+
 		return view;
 	}
 
@@ -50,18 +53,10 @@ public class NewPostsFragment extends Fragment {
 					@Override
 					public void onResponse(JSONObject response) {
 						// TODO Auto-generated method stub
-						String result;
-						try {
-							result = response.getString("result");
-							if (result.equalsIgnoreCase("success")) {
-								((BaseActivity) getActivity()).hideLoadingDialog();
-								LogUtils.log(TAG, response.toString());
-							}
-						} catch (JSONException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						if (ResponseParser.isSuccess(response)) {
+							List<NewPost> newPostList = ResponseParser.parseNewPostResponse(response);
+							listView.setAdapter(new NewPostsListAdapter(getActivity(), newPostList));
 						}
-
 					}
 				}, new ErrorListener() {
 

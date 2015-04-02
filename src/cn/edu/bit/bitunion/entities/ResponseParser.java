@@ -1,5 +1,9 @@
 package cn.edu.bit.bitunion.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,7 +23,26 @@ public class ResponseParser {
 	}
 
 	public static LoginInfo parseLoginResponse(JSONObject response) {
-		return JSON.parseObject(response.toString(), LoginInfo.class);
+		LoginInfo result = JSON.parseObject(response.toString(), LoginInfo.class);
+		Decoder.decode(result);
+		return result;
+	}
+
+	public static List<NewPost> parseNewPostResponse(JSONObject response) {
+		List<NewPost> result = new ArrayList<NewPost>();
+		JSONArray array;
+		try {
+			array = response.getJSONArray("newlist");
+			for (int i = 0; i < array.length(); i++) {
+				NewPost post = JSON.parseObject(array.getJSONObject(i).toString(), NewPost.class);
+				Decoder.decode(post);
+				result.add(post);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }
