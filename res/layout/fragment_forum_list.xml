@@ -4,10 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="全部论坛" />
+    <ExpandableListView
+        android:id="@+id/listview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+         android:background="#ffffff"
+        android:cacheColorHint="#00000000"
+        android:listSelector="#00000000" 
+      />
 
+    
 </LinearLayout>
