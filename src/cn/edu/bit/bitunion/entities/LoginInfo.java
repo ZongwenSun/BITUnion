@@ -9,6 +9,10 @@ public class LoginInfo {
 	private String credit;
 	private String lastactivity;
 
+	public LoginInfo() {
+
+	}
+
 	public LoginInfo(String uid, String username, String session, String status, String credit, String lastactivity) {
 		this.uid = uid;
 		this.username = username;

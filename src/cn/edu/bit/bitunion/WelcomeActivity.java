@@ -6,14 +6,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import cn.edu.bit.bitunion.entities.RequestJsonFactory;
-import cn.edu.bit.bitunion.entities.response.LoginResponse;
+import cn.edu.bit.bitunion.entities.ResponseParser;
 import cn.edu.bit.bitunion.global.GlobalUrls;
 import cn.edu.bit.bitunion.global.LoginManager;
 import cn.edu.bit.bitunion.network.RequestQueueManager;
 import cn.edu.bit.bitunion.tools.LogUtils;
 import cn.edu.bit.bitunion.tools.ToastHelper;
 
-import com.alibaba.fastjson.JSON;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
@@ -44,9 +43,9 @@ public class WelcomeActivity extends BaseActivity {
 								@Override
 								public void onResponse(JSONObject response) {
 									// TODO Auto-generated method stub
-									LoginResponse loginResponse = JSON.parseObject(response.toString(), LoginResponse.class);
-									if (loginResponse.getResult().equalsIgnoreCase("success")) {
-										getAppContext().setLoginInfo(loginResponse.toLoginInfo());
+
+									if (ResponseParser.isSuccess(response)) {
+										getAppContext().setLoginInfo(ResponseParser.parseLoginResponse(response));
 										jumpToPage(HomeActivity.class, null, true);
 									}
 								}
