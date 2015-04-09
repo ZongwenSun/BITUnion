@@ -69,8 +69,7 @@ public class ForumListFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.fragment_forum_list, null);
@@ -96,10 +95,8 @@ public class ForumListFragment extends Fragment {
 		listview.setOnChildClickListener(new OnChildClickListener() {
 
 			@Override
-			public boolean onChildClick(ExpandableListView parent, View v,
-					int groupPosition, int childPosition, long id) {
-				ToastHelper.showToast(getActivity(),
-						"你点击了" + adapter.getChild(groupPosition, childPosition));
+			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+				ToastHelper.showToast(getActivity(), "你点击了" + adapter.getChild(groupPosition, childPosition));
 				return false;
 			}
 		});
@@ -118,17 +115,21 @@ public class ForumListFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		GroupData = new ArrayList<String>();
 		ChildrenData = new ArrayList<List<String>>();
+
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
 		getForumList();
 	}
 
 	private void getForumList() {
-		LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext()
-				.getLoginInfo();
+		LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext().getLoginInfo();
 		((BaseActivity) getActivity()).showLoadingDialog();
-		RequestQueueManager.getInstance(getActivity()).postJsonRequest(
-				GlobalUrls.getForumListUrl(),
-				RequestJsonFactory.forumListJson(loginInfo.getUsername(),
-						loginInfo.getSession()), new Listener<JSONObject>() {
+		RequestQueueManager.getInstance(getActivity()).postJsonRequest(GlobalUrls.getForumListUrl(),
+				RequestJsonFactory.forumListJson(loginInfo.getUsername(), loginInfo.getSession()), new Listener<JSONObject>() {
 
 					@Override
 					public void onResponse(JSONObject response) {
@@ -137,8 +138,7 @@ public class ForumListFragment extends Fragment {
 						try {
 							result = response.getString("result");
 							if (result.equalsIgnoreCase("success")) {
-								((BaseActivity) getActivity())
-										.hideLoadingDialog();
+								((BaseActivity) getActivity()).hideLoadingDialog();
 								LogUtils.log(TAG, response.toString());
 								forumlist = ForumListParser.parse(response);
 								try {
@@ -214,8 +214,7 @@ public class ForumListFragment extends Fragment {
 		}
 
 		@Override
-		public View getGroupView(int groupPosition, boolean isExpanded,
-				View convertView, ViewGroup parent) {
+		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 			TextView myText = null;
 			if (convertView != null) {
@@ -229,8 +228,7 @@ public class ForumListFragment extends Fragment {
 		}
 
 		private TextView createView(String content) {
-			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(
-					ViewGroup.LayoutParams.FILL_PARENT, 100);
+			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 100);
 			TextView myText = new TextView(getActivity());
 			myText.setLayoutParams(layoutParams);
 			myText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
@@ -242,8 +240,7 @@ public class ForumListFragment extends Fragment {
 		}
 
 		@Override
-		public View getChildView(int groupPosition, int childPosition,
-				boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
 			LinearLayout ll = new LinearLayout(getActivity());
 			ll.setOrientation(0);

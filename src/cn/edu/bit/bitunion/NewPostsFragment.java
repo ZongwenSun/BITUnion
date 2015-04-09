@@ -1,5 +1,6 @@
 package cn.edu.bit.bitunion;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -25,14 +26,17 @@ import com.android.volley.VolleyError;
 
 public class NewPostsFragment extends Fragment {
 	private static final String TAG = "NewPostsFragment";
-	private ListView listView;
+	private List<NewPost> mDataList;
+	private ListView mListView;
+	private NewPostsListAdapter mAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.fragment_new_posts, null);
-		listView = (ListView) view.findViewById(R.id.new_posts_listview);
-
+		mListView = (ListView) view.findViewById(R.id.new_posts_listview);
+		mAdapter = new NewPostsListAdapter(getActivity(), mDataList);
+		mListView.setAdapter(mAdapter);
 		return view;
 	}
 
@@ -40,8 +44,14 @@ public class NewPostsFragment extends Fragment {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		getNewPostsList();
+		mDataList = new ArrayList<NewPost>();
+	}
 
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onActivityCreated(savedInstanceState);
+		getNewPostsList();
 	}
 
 	private void getNewPostsList() {
@@ -55,7 +65,8 @@ public class NewPostsFragment extends Fragment {
 						// TODO Auto-generated method stub
 						if (ResponseParser.isSuccess(response)) {
 							List<NewPost> newPostList = ResponseParser.parseNewPostResponse(response);
-							listView.setAdapter(new NewPostsListAdapter(getActivity(), newPostList));
+							mDataList.addAll(newPostList);
+							mAdapter.notifyDataSetChanged();
 						}
 					}
 				}, new ErrorListener() {
