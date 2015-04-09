@@ -8,20 +8,19 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 import android.widget.ExpandableListView.OnGroupExpandListener;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import cn.edu.bit.bitunion.entities.Forum;
 import cn.edu.bit.bitunion.entities.LoginInfo;
@@ -69,7 +68,8 @@ public class ForumListFragment extends Fragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.fragment_forum_list, null);
@@ -95,8 +95,10 @@ public class ForumListFragment extends Fragment {
 		listview.setOnChildClickListener(new OnChildClickListener() {
 
 			@Override
-			public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-				ToastHelper.showToast(getActivity(), "你点击了" + adapter.getChild(groupPosition, childPosition));
+			public boolean onChildClick(ExpandableListView parent, View v,
+					int groupPosition, int childPosition, long id) {
+				ToastHelper.showToast(getActivity(),
+						"你点击了" + adapter.getChild(groupPosition, childPosition));
 				return false;
 			}
 		});
@@ -119,17 +121,22 @@ public class ForumListFragment extends Fragment {
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
+	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		getForumList();
+		// adapter.notifyDataSetChanged();
 	}
 
 	private void getForumList() {
-		LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext().getLoginInfo();
+		LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext()
+				.getLoginInfo();
 		((BaseActivity) getActivity()).showLoadingDialog();
-		RequestQueueManager.getInstance(getActivity()).postJsonRequest(GlobalUrls.getForumListUrl(),
-				RequestJsonFactory.forumListJson(loginInfo.getUsername(), loginInfo.getSession()), new Listener<JSONObject>() {
+		RequestQueueManager.getInstance(getActivity()).postJsonRequest(
+				GlobalUrls.getForumListUrl(),
+				RequestJsonFactory.forumListJson(loginInfo.getUsername(),
+						loginInfo.getSession()), new Listener<JSONObject>() {
 
 					@Override
 					public void onResponse(JSONObject response) {
@@ -138,7 +145,8 @@ public class ForumListFragment extends Fragment {
 						try {
 							result = response.getString("result");
 							if (result.equalsIgnoreCase("success")) {
-								((BaseActivity) getActivity()).hideLoadingDialog();
+								((BaseActivity) getActivity())
+										.hideLoadingDialog();
 								LogUtils.log(TAG, response.toString());
 								forumlist = ForumListParser.parse(response);
 								try {
@@ -214,47 +222,52 @@ public class ForumListFragment extends Fragment {
 		}
 
 		@Override
-		public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+		public View getGroupView(int groupPosition, boolean isExpanded,
+				View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			TextView myText = null;
-			if (convertView != null) {
-				myText = (TextView) convertView;
-				myText.setText(GroupData.get(groupPosition));
+			View view = convertView;
+			GroupHolder holder;
+			if (view == null) {
+				view = LayoutInflater.from(getActivity()).inflate(
+						R.layout.forumlistview_group, null);
+				holder = new GroupHolder();
+				holder.grouptext = (TextView) view.findViewById(R.id.listgroup);
+				Typeface typeface = Typeface.createFromAsset(getActivity()
+						.getAssets(), "fonts/xingkai.ttf");
+				holder.grouptext.setTypeface(typeface);
+				view.setTag(holder);
 			} else {
-				myText = createView(GroupData.get(groupPosition));
+				holder = (GroupHolder) view.getTag();
 			}
-			return myText;
+			holder.grouptext.setText(GroupData.get(groupPosition));
+			return view;
 
-		}
-
-		private TextView createView(String content) {
-			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, 100);
-			TextView myText = new TextView(getActivity());
-			myText.setLayoutParams(layoutParams);
-			myText.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-			myText.setPadding(80, 0, 0, 0);
-			myText.setTextSize(20);
-
-			myText.setText(content);
-			return myText;
 		}
 
 		@Override
-		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+		public View getChildView(int groupPosition, int childPosition,
+				boolean isLastChild, View convertView, ViewGroup parent) {
 			// TODO Auto-generated method stub
-			LinearLayout ll = new LinearLayout(getActivity());
-			ll.setOrientation(0);
-			ImageView childlogo = new ImageView(getActivity());
-			childlogo.setImageResource(R.drawable.ic_childlist);
-			ll.addView(childlogo);
-			TextView textView = new TextView(getActivity());
-			textView.setText(ChildrenData.get(groupPosition).get(childPosition));
-			textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-			textView.setPadding(50, 0, 0, 0);
-			textView.setTextSize(20);
-			ll.addView(textView);
-			return ll;
-
+			View view = convertView;
+			ChildHolder cholder;
+			if (view == null) {
+				view = LayoutInflater.from(getActivity()).inflate(
+						R.layout.forumlistview_children, null);
+				cholder = new ChildHolder();
+				cholder.imageView = (ImageView) view.findViewById(R.id.img);
+				cholder.childtext = (TextView) view
+						.findViewById(R.id.listgroup);
+				Typeface typeface = Typeface.createFromAsset(getActivity()
+						.getAssets(), "fonts/xingkai.ttf");
+				cholder.childtext.setTypeface(typeface);
+				view.setTag(cholder);
+			} else {
+				cholder = (ChildHolder) view.getTag();
+			}
+			// cholder.imageView.setBackgroundResource(R.drawable.ic_launcher);
+			cholder.childtext.setText(ChildrenData.get(groupPosition).get(
+					childPosition));
+			return view;
 		}
 
 		@Override
@@ -265,4 +278,12 @@ public class ForumListFragment extends Fragment {
 
 	}
 
+	static class GroupHolder {
+		TextView grouptext;
+	}
+
+	static class ChildHolder {
+		ImageView imageView;
+		TextView childtext;
+	}
 }

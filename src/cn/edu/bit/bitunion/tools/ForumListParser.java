@@ -56,6 +56,7 @@ public class ForumListParser {
 				obj.getString("icon"), obj.getString("description"),
 				obj.getString("moderator"), obj.getString("threads"),
 				obj.getString("posts"), obj.getString("onlines"));
+
 		return forum;
 	}
 
