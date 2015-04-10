@@ -48,17 +48,23 @@ public class NewPostsListAdapter extends BaseAdapter {
 			ViewHolder holder = new ViewHolder();
 			holder.postNameText = (TextView) rowView.findViewById(R.id.post_name_textview);
 			holder.forumNameText = (TextView) rowView.findViewById(R.id.forum_name_textview);
+			holder.authorNameText = (TextView) rowView.findViewById(R.id.post_author_name_textview);
+			holder.replyCountText = (TextView) rowView.findViewById(R.id.reply_count_textview);
 			rowView.setTag(holder);
 		}
 		NewPost post = mData.get(position);
 		ViewHolder viewHolder = (ViewHolder) rowView.getTag();
 		viewHolder.postNameText.setText(post.getPname());
 		viewHolder.forumNameText.setText(post.getFname());
+		viewHolder.authorNameText.setText(post.getAuthor());
+		viewHolder.replyCountText.setText(post.getTid_sum());
 		return rowView;
 	}
 
 	static class ViewHolder {
 		public TextView postNameText;
 		public TextView forumNameText;
+		public TextView authorNameText;
+		public TextView replyCountText;
 	}
 }
