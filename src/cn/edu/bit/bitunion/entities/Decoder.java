@@ -2,6 +2,7 @@ package cn.edu.bit.bitunion.entities;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URLDecoder;
 
 public class Decoder {
@@ -12,7 +13,7 @@ public class Decoder {
 		for (int i = 0; i < fields.length; i++) {
 			Field field = fields[i];
 			String name = field.getName();
-			if (name.equalsIgnoreCase("this$0")) {
+			if (name.equalsIgnoreCase("this$0") || Modifier.isFinal(field.getModifiers())) {
 				continue;
 			}
 			String upperName = name.substring(0, 1).toUpperCase() + name.substring(1);
