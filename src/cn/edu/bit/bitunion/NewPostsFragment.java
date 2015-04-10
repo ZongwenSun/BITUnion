@@ -55,28 +55,30 @@ public class NewPostsFragment extends Fragment {
 	}
 
 	private void getNewPostsList() {
-		LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext().getLoginInfo();
-		((BaseActivity) getActivity()).showLoadingDialog();
-		RequestQueueManager.getInstance(getActivity()).postJsonRequest(GlobalUrls.getNewPostsUrl(),
-				RequestJsonFactory.newPostsJson(loginInfo.getUsername(), loginInfo.getSession()), new Listener<JSONObject>() {
+		if (((BaseActivity) getActivity()).checkConnection()) {
+			LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext().getLoginInfo();
+			((BaseActivity) getActivity()).showLoadingDialog();
+			RequestQueueManager.getInstance(getActivity()).postJsonRequest(GlobalUrls.getNewPostsUrl(),
+					RequestJsonFactory.newPostsJson(loginInfo.getUsername(), loginInfo.getSession()), new Listener<JSONObject>() {
 
-					@Override
-					public void onResponse(JSONObject response) {
-						// TODO Auto-generated method stub
-						if (ResponseParser.isSuccess(response)) {
-							List<NewPost> newPostList = ResponseParser.parseNewPostResponse(response);
-							mDataList.addAll(newPostList);
-							mAdapter.notifyDataSetChanged();
+						@Override
+						public void onResponse(JSONObject response) {
+							// TODO Auto-generated method stub
+							if (ResponseParser.isSuccess(response)) {
+								List<NewPost> newPostList = ResponseParser.parseNewPostResponse(response);
+								mDataList.addAll(newPostList);
+								mAdapter.notifyDataSetChanged();
+							}
 						}
-					}
-				}, new ErrorListener() {
+					}, new ErrorListener() {
 
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						// TODO Auto-generated method stub
-						ToastHelper.showToast(getActivity(), error.toString());
-					}
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							// TODO Auto-generated method stub
+							ToastHelper.showToast(getActivity(), error.toString());
+						}
 
-				});
+					});
+		}
 	}
 }

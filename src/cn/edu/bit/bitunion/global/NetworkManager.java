@@ -39,6 +39,7 @@ public class NetworkManager extends BroadcastReceiver {
 		// 获取当前的网络连接是否可用
 		if (null == networkInfo) {
 			isNetAvailable = false;
+			isConnected = false;
 		} else {
 			isNetAvailable = networkInfo.isAvailable();
 			isConnected = networkInfo.isConnected();
