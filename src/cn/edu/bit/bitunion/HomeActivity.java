@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import com.viewpagerindicator.TabPageIndicator;
 
 public class HomeActivity extends BaseActivity {
-	private TabsAdapter mAdapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

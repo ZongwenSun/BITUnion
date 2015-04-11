@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import cn.edu.bit.bitunion.entities.LoginInfo;
 import cn.edu.bit.bitunion.entities.NewPost;
-import cn.edu.bit.bitunion.entities.RequestJsonFactory;
-import cn.edu.bit.bitunion.entities.ResponseParser;
 import cn.edu.bit.bitunion.global.GlobalUrls;
+import cn.edu.bit.bitunion.global.RequestJsonFactory;
+import cn.edu.bit.bitunion.global.ResponseParser;
 import cn.edu.bit.bitunion.network.RequestQueueManager;
 import cn.edu.bit.bitunion.tools.ToastHelper;
 import cn.edu.bit.bitunion.widgets.NewPostsListAdapter;
@@ -64,8 +64,9 @@ public class NewPostsFragment extends Fragment {
 						@Override
 						public void onResponse(JSONObject response) {
 							// TODO Auto-generated method stub
+							((BaseActivity) getActivity()).hideLoadingDialog();
 							if (ResponseParser.isSuccess(response)) {
-								List<NewPost> newPostList = ResponseParser.parseNewPostResponse(response);
+								List<NewPost> newPostList = ResponseParser.parseNewPostList(response);
 								mDataList.addAll(newPostList);
 								mAdapter.notifyDataSetChanged();
 							}
@@ -75,6 +76,7 @@ public class NewPostsFragment extends Fragment {
 						@Override
 						public void onErrorResponse(VolleyError error) {
 							// TODO Auto-generated method stub
+							((BaseActivity) getActivity()).hideLoadingDialog();
 							ToastHelper.showToast(getActivity(), error.toString());
 						}
 

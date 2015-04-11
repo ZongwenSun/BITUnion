@@ -16,7 +16,6 @@ public class NetworkManager extends BroadcastReceiver {
 	private ConnectivityManager mConnManager;
 	private boolean isNetAvailable = false;
 	private boolean isConnected = false;
-	private int connType;
 
 	public static NetworkManager getInstance(Context context) {
 		if (instance == null) {

@@ -5,14 +5,12 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +22,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import cn.edu.bit.bitunion.entities.Forum;
 import cn.edu.bit.bitunion.entities.LoginInfo;
-import cn.edu.bit.bitunion.entities.RequestJsonFactory;
 import cn.edu.bit.bitunion.global.GlobalUrls;
+import cn.edu.bit.bitunion.global.RequestJsonFactory;
+import cn.edu.bit.bitunion.global.ResponseParser;
 import cn.edu.bit.bitunion.network.RequestQueueManager;
-import cn.edu.bit.bitunion.tools.ForumListParser;
 import cn.edu.bit.bitunion.tools.LogUtils;
 import cn.edu.bit.bitunion.tools.ToastHelper;
 
@@ -52,12 +50,9 @@ public class ForumListFragment extends Fragment {
 		for (int i = 0; i < forumlist.size(); i++) {
 			String groupname = "";
 			groupname = URLDecoder.decode(forumlist.get(i).getName(), "UTF-8");
-
-			Log.e("HSC", groupname);
 			GroupData.add(groupname);
 			List<Forum> forums = forumlist.get(i).getSubForumList();
 			List<String> childdata = new ArrayList<String>();
-			;
 			for (int j = 0; j < forums.size(); j++) {
 				String mainname = "";
 				mainname = URLDecoder.decode(forums.get(j).getName(), "UTF-8");
@@ -103,11 +98,6 @@ public class ForumListFragment extends Fragment {
 		return view;
 	}
 
-	private ExpandableListView findViewById(int listview) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -123,54 +113,41 @@ public class ForumListFragment extends Fragment {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		getForumList();
-		// adapter.notifyDataSetChanged();
 	}
 
 	private void getForumList() {
-		if (((BaseActivity) getActivity()).checkConnection()) {
 
-			LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext().getLoginInfo();
-			((BaseActivity) getActivity()).showLoadingDialog();
-			RequestQueueManager.getInstance(getActivity()).postJsonRequest(GlobalUrls.getForumListUrl(),
-					RequestJsonFactory.forumListJson(loginInfo.getUsername(), loginInfo.getSession()), new Listener<JSONObject>() {
+		LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext().getLoginInfo();
+		((BaseActivity) getActivity()).showLoadingDialog();
+		RequestQueueManager.getInstance(getActivity()).postJsonRequest(GlobalUrls.getForumListUrl(),
+				RequestJsonFactory.forumListJson(loginInfo.getUsername(), loginInfo.getSession()), new Listener<JSONObject>() {
 
-						@Override
-						public void onResponse(JSONObject response) {
-							// TODO Auto-generated method stub
-							String result;
+					@Override
+					public void onResponse(JSONObject response) {
+						// TODO Auto-generated method stub
+						((BaseActivity) getActivity()).hideLoadingDialog();
+						if (ResponseParser.isSuccess(response)) {
+							LogUtils.log(TAG, response.toString());
+							forumlist = ResponseParser.parseForumList(response);
 							try {
-								result = response.getString("result");
-								if (result.equalsIgnoreCase("success")) {
-									((BaseActivity) getActivity()).hideLoadingDialog();
-									LogUtils.log(TAG, response.toString());
-									forumlist = ForumListParser.parse(response);
-									try {
-										LoadListData();
-									} catch (UnsupportedEncodingException e) {
-										// TODO Auto-generated catch block
-										e.printStackTrace();
-									}
-									adapter.notifyDataSetChanged();
-									LogUtils.log(TAG, forumlist.size() + "");
-									Log.e("HSC", forumlist.size() + "");
-								}
-							} catch (JSONException e) {
+								LoadListData();
+								adapter.notifyDataSetChanged();
+							} catch (UnsupportedEncodingException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-
 						}
+					}
+				}, new ErrorListener() {
 
-					}, new ErrorListener() {
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						// TODO Auto-generated method stub
+						((BaseActivity) getActivity()).hideLoadingDialog();
+						ToastHelper.showToast(getActivity(), error.toString());
+					}
 
-						@Override
-						public void onErrorResponse(VolleyError error) {
-							// TODO Auto-generated method stub
-							ToastHelper.showToast(getActivity(), error.toString());
-						}
-
-					});
-		}
+				});
 	}
 
 	private class MyAdapter extends BaseExpandableListAdapter {

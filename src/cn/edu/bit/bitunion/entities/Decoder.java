@@ -20,7 +20,6 @@ public class Decoder {
 			try {
 				Method getMethod = cls.getDeclaredMethod("get" + upperName);
 				Method setMethod = cls.getDeclaredMethod("set" + upperName, field.getType());
-
 				if (field.getType().equals(String.class)) {
 					String value = (String) getMethod.invoke(obj);
 					setMethod.invoke(obj, URLDecoder.decode(value));

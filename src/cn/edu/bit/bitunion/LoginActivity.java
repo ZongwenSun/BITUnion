@@ -7,10 +7,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import cn.edu.bit.bitunion.entities.RequestJsonFactory;
-import cn.edu.bit.bitunion.entities.ResponseParser;
 import cn.edu.bit.bitunion.global.GlobalUrls;
 import cn.edu.bit.bitunion.global.LoginManager;
+import cn.edu.bit.bitunion.global.RequestJsonFactory;
+import cn.edu.bit.bitunion.global.ResponseParser;
 import cn.edu.bit.bitunion.network.RequestQueueManager;
 import cn.edu.bit.bitunion.tools.LogUtils;
 import cn.edu.bit.bitunion.tools.StringUtils;
@@ -61,7 +61,7 @@ public class LoginActivity extends BaseActivity {
 
 										if (ResponseParser.isSuccess(response)) {
 											LoginManager.getInstance(getAppContext()).saveLoginInfo(username, password);
-											getAppContext().setLoginInfo(ResponseParser.parseLoginResponse(response));
+											getAppContext().setLoginInfo(ResponseParser.parseLoginInfo(response));
 											jumpToPage(HomeActivity.class, null, true);
 										} else {
 											LogUtils.log(TAG, response.toString());

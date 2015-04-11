@@ -5,10 +5,10 @@ import org.json.JSONObject;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import cn.edu.bit.bitunion.entities.RequestJsonFactory;
-import cn.edu.bit.bitunion.entities.ResponseParser;
 import cn.edu.bit.bitunion.global.GlobalUrls;
 import cn.edu.bit.bitunion.global.LoginManager;
+import cn.edu.bit.bitunion.global.RequestJsonFactory;
+import cn.edu.bit.bitunion.global.ResponseParser;
 import cn.edu.bit.bitunion.network.RequestQueueManager;
 import cn.edu.bit.bitunion.tools.LogUtils;
 import cn.edu.bit.bitunion.tools.ToastHelper;
@@ -45,7 +45,7 @@ public class WelcomeActivity extends BaseActivity {
 									// TODO Auto-generated method stub
 
 									if (ResponseParser.isSuccess(response)) {
-										getAppContext().setLoginInfo(ResponseParser.parseLoginResponse(response));
+										getAppContext().setLoginInfo(ResponseParser.parseLoginInfo(response));
 										jumpToPage(HomeActivity.class, null, true);
 									}
 								}

@@ -1,4 +1,4 @@
-package cn.edu.bit.bitunion.entities;
+package cn.edu.bit.bitunion.global;
 
 import org.json.JSONException;
 import org.json.JSONObject;
