@@ -23,20 +23,33 @@ import cn.edu.bit.bitunion.widgets.NewPostsListAdapter;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 public class NewPostsFragment extends Fragment {
 	private static final String TAG = "NewPostsFragment";
 	private List<NewPost> mDataList;
-	private ListView mListView;
+	private PullToRefreshListView mListView;
 	private NewPostsListAdapter mAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.fragment_new_posts, null);
-		mListView = (ListView) view.findViewById(R.id.new_posts_listview);
+		mListView = (PullToRefreshListView) view.findViewById(R.id.new_posts_listview);
 		mAdapter = new NewPostsListAdapter(getActivity(), mDataList);
 		mListView.setAdapter(mAdapter);
+		mListView.setMode(Mode.PULL_FROM_START);
+		mListView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				// TODO Auto-generated method stub
+				fresh();
+			}
+		});
 		return view;
 	}
 
@@ -81,6 +94,39 @@ public class NewPostsFragment extends Fragment {
 						}
 
 					});
+		}
+	}
+
+	private void fresh() {
+		if (((BaseActivity) getActivity()).checkConnection()) {
+			LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext().getLoginInfo();
+			RequestQueueManager.getInstance(getActivity()).postJsonRequest(GlobalUrls.getNewPostsUrl(),
+					RequestJsonFactory.newPostsJson(loginInfo.getUsername(), loginInfo.getSession()), new Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							// TODO Auto-generated method stub
+							if (ResponseParser.isSuccess(response)) {
+								List<NewPost> newPostList = ResponseParser.parseNewPostList(response);
+								mDataList.clear();
+								mDataList.addAll(newPostList);
+								mAdapter.notifyDataSetChanged();
+							}
+							mListView.onRefreshComplete();
+						}
+					}, new ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							// TODO Auto-generated method stub
+							mListView.onRefreshComplete();
+							ToastHelper.showToast(getActivity(), error.toString());
+						}
+
+					});
+
+		} else {
+			mListView.onRefreshComplete();
 		}
 	}
 }
