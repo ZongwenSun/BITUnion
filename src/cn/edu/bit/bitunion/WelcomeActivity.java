@@ -23,6 +23,7 @@ public class WelcomeActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getSupportActionBar().hide();
 		setContentView(R.layout.activity_welcome);
 
 		mHandler.sendEmptyMessageDelayed(0, 1000);

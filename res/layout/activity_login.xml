@@ -2,47 +2,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <include
-        android:id="@+id/title_bar_layout"
-        layout="@layout/title_bar_base" />
-
-    <LinearLayout
+    <EditText
+        android:id="@+id/login_username_edit"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin" >
+        android:layout_height="wrap_content"
+        android:hint="用户名"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="smartwen" />
 
-        <EditText
-            android:id="@+id/login_username_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="用户名"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="smartwen" />
+    <EditText
+        android:id="@+id/login_password_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="密码"
+        android:inputType="textPassword"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="szw21035" />
 
-        <EditText
-            android:id="@+id/login_password_edit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="密码"
-            android:inputType="textPassword"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="szw21035" />
-
-        <Button
-            android:id="@+id/login_sign_in_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@color/background"
-            android:text="@string/login" />
-    </LinearLayout>
+    <Button
+        android:id="@+id/login_sign_in_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/background"
+        android:text="@string/login" />
 
 </LinearLayout>
