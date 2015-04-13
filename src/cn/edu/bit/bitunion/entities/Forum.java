@@ -1,9 +1,14 @@
 package cn.edu.bit.bitunion.entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Forum {
+public class Forum implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4964662568265048418L;
 	private String type;
 	private String fid;
 	private String name;
@@ -26,9 +31,7 @@ public class Forum {
 		setName(name);
 	}
 
-	public Forum(String type, String fid, String name, String fup, String icon,
-			String description, String moderator, String threads, String posts,
-			String onlines) {
+	public Forum(String type, String fid, String name, String fup, String icon, String description, String moderator, String threads, String posts, String onlines) {
 		setType(type);
 		setFid(fid);
 		setName(name);
@@ -134,9 +137,5 @@ public class Forum {
 			subForumList = new ArrayList<Forum>();
 		}
 		subForumList.add(sub);
-	}
-
-	public static enum TYPE {
-		GROUP, FORUM, SUBFORUM;
 	}
 }

@@ -1,8 +1,10 @@
 package cn.edu.bit.bitunion.global;
 
 public class GlobalUrls {
-	public static final String BASE_URL_IN_SCHOOL = "http://www.bitunion.org/open_api/";
-	public static final String BASE_URL_OUT_SCHOOL = "http://out.bitunion.org/open_api/";
+	// public static final String BASE_
+	public static final String BASE_URL_IN_SCHOOL = "http://www.bitunion.org/";
+	public static final String BASE_URL_OUT_SCHOOL = "http://out.bitunion.org/";
+	private static String BASE_API;
 	private static String BASE_URL;
 
 	public static void setInSchool(boolean isInSchool) {
@@ -11,29 +13,35 @@ public class GlobalUrls {
 		} else {
 			BASE_URL = BASE_URL_OUT_SCHOOL;
 		}
+		BASE_API = BASE_URL + "open_api/";
 	}
 
 	public static String getLoginUrl() {
-		return BASE_URL + "bu_logging.php";
+		return BASE_API + "bu_logging.php";
 	}
 
 	public static String getLogoutUrl() {
-		return BASE_URL + "bu_logging.php";
+		return BASE_API + "bu_logging.php";
 	}
 
 	public static String getForumListUrl() {
-		return BASE_URL + "bu_forum.php";
+		return BASE_API + "bu_forum.php";
 	}
 
 	public static String getThreadListUrl() {
-		return BASE_URL + "bu_thread.php";
+		return BASE_API + "bu_thread.php";
 	}
 
 	public static String getPostListUrl() {
-		return BASE_URL + "bu_post.php";
+		return BASE_API + "bu_post.php";
 	}
 
 	public static String getNewPostsUrl() {
-		return BASE_URL + "bu_home.php";
+		return BASE_API + "bu_home.php";
+	}
+
+	public static String getImageUrl(String url) {
+
+		return BASE_URL_OUT_SCHOOL + url;
 	}
 }

@@ -32,6 +32,10 @@ public class RequestQueueManager {
 		return instance;
 	}
 
+	public RequestQueue getRequestQueue() {
+		return mRequestQueue;
+	}
+
 	public void postJsonRequest(String url, JSONObject jsonRequest, Listener<JSONObject> listener, ErrorListener errorListener) {
 		JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, listener, errorListener);
 		request.setRetryPolicy(new DefaultRetryPolicy(MY_SOCKET_TIMEOUT_MS, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

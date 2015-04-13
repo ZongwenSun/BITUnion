@@ -1,5 +1,6 @@
 package cn.edu.bit.bitunion.global;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import cn.edu.bit.bitunion.entities.Decoder;
 import cn.edu.bit.bitunion.entities.Forum;
 import cn.edu.bit.bitunion.entities.LoginInfo;
 import cn.edu.bit.bitunion.entities.NewPost;
+import cn.edu.bit.bitunion.tools.LogUtils;
 
 import com.alibaba.fastjson.JSON;
 
@@ -59,7 +61,10 @@ public class ResponseParser {
 			for (String forumId : forumIds) {
 				JSONObject forum = forumlist.getJSONObject(forumId);
 				JSONObject group = forum.getJSONObject("main");
-				Forum groupForum = new Forum(group.getString("type"), group.getString("fid"), group.getString("name"));
+				String type = URLDecoder.decode(group.getString("type"));
+				String fid = URLDecoder.decode(group.getString("fid"));
+				String name = URLDecoder.decode(group.getString("name"));
+				Forum groupForum = new Forum(type, fid, name);
 				groupForumList.add(groupForum);
 				for (int id = 0; forum.has(String.valueOf(id)); id++) {
 					JSONObject mainforums = forum.getJSONObject(String.valueOf(id));
@@ -67,12 +72,13 @@ public class ResponseParser {
 					JSONObject main = mainArray.getJSONObject(0);
 					Forum mainForum = jsonToForum(main);
 					groupForum.addSubForum(mainForum);
-					if (forum.has("sub")) {
+					if (mainforums.has("sub")) {
 						JSONArray subArray = mainforums.getJSONArray("sub");
 						for (int i = 0; i < subArray.length(); i++) {
 							JSONObject sub = subArray.getJSONObject(i);
 							Forum subForum = jsonToForum(sub);
 							mainForum.addSubForum(subForum);
+							LogUtils.log("responseParser", subForum.getName());
 						}
 					}
 
@@ -86,8 +92,17 @@ public class ResponseParser {
 	}
 
 	private static Forum jsonToForum(JSONObject obj) throws JSONException {
-		Forum forum = new Forum(obj.getString("type"), obj.getString("fid"), obj.getString("name"), obj.getString("fup"), obj.getString("icon"), obj.getString("description"),
-				obj.getString("moderator"), obj.getString("threads"), obj.getString("posts"), obj.getString("onlines"));
+		String type = URLDecoder.decode(obj.getString("type"));
+		String fid = URLDecoder.decode(obj.getString("fid"));
+		String name = URLDecoder.decode(obj.getString("name"));
+		String fup = URLDecoder.decode(obj.getString("fup"));
+		String icon = URLDecoder.decode(obj.getString("icon"));
+		String description = URLDecoder.decode(obj.getString("description"));
+		String moderator = URLDecoder.decode(obj.getString("moderator"));
+		String threads = URLDecoder.decode(obj.getString("threads"));
+		String posts = URLDecoder.decode(obj.getString("posts"));
+		String onlines = URLDecoder.decode(obj.getString("onlines"));
+		Forum forum = new Forum(type, fid, name, fup, icon, description, moderator, threads, posts, onlines);
 		return forum;
 	}
 

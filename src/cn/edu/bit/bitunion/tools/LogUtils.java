@@ -19,4 +19,10 @@ public class LogUtils {
 			Log.i(tag, msg);
 		}
 	}
+
+	public static void log(String msg) {
+		if (debug) {
+			Log.i("BITUnion", msg);
+		}
+	}
 }
