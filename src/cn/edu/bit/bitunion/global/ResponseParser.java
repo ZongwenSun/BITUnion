@@ -12,6 +12,7 @@ import cn.edu.bit.bitunion.entities.Decoder;
 import cn.edu.bit.bitunion.entities.Forum;
 import cn.edu.bit.bitunion.entities.LoginInfo;
 import cn.edu.bit.bitunion.entities.NewPost;
+import cn.edu.bit.bitunion.entities.Post;
 import cn.edu.bit.bitunion.tools.LogUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -30,7 +31,8 @@ public class ResponseParser {
 	}
 
 	public static LoginInfo parseLoginInfo(JSONObject response) {
-		LoginInfo result = JSON.parseObject(response.toString(), LoginInfo.class);
+		LoginInfo result = JSON.parseObject(response.toString(),
+				LoginInfo.class);
 		Decoder.decode(result);
 		return result;
 	}
@@ -41,7 +43,8 @@ public class ResponseParser {
 		try {
 			array = response.getJSONArray("newlist");
 			for (int i = 0; i < array.length(); i++) {
-				NewPost post = JSON.parseObject(array.getJSONObject(i).toString(), NewPost.class);
+				NewPost post = JSON.parseObject(array.getJSONObject(i)
+						.toString(), NewPost.class);
 				Decoder.decode(post);
 				result.add(post);
 			}
@@ -67,7 +70,8 @@ public class ResponseParser {
 				Forum groupForum = new Forum(type, fid, name);
 				groupForumList.add(groupForum);
 				for (int id = 0; forum.has(String.valueOf(id)); id++) {
-					JSONObject mainforums = forum.getJSONObject(String.valueOf(id));
+					JSONObject mainforums = forum.getJSONObject(String
+							.valueOf(id));
 					JSONArray mainArray = mainforums.getJSONArray("main");
 					JSONObject main = mainArray.getJSONObject(0);
 					Forum mainForum = jsonToForum(main);
@@ -102,8 +106,26 @@ public class ResponseParser {
 		String threads = URLDecoder.decode(obj.getString("threads"));
 		String posts = URLDecoder.decode(obj.getString("posts"));
 		String onlines = URLDecoder.decode(obj.getString("onlines"));
-		Forum forum = new Forum(type, fid, name, fup, icon, description, moderator, threads, posts, onlines);
+		Forum forum = new Forum(type, fid, name, fup, icon, description,
+				moderator, threads, posts, onlines);
 		return forum;
 	}
 
+	public static List<Post> parsePostResponse(JSONObject response) {
+		List<Post> result = new ArrayList<Post>();
+		JSONArray array;
+		try {
+			array = response.getJSONArray("postlist");
+			for (int i = 0; i < 20; i++) {
+				Post post = JSON.parseObject(array.getJSONObject(i).toString(),
+						Post.class);
+				Decoder.decode(post);
+				result.add(post);
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

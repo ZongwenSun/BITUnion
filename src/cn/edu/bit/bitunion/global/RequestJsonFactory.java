@@ -16,7 +16,8 @@ public class RequestJsonFactory {
 		return json;
 	}
 
-	public static JSONObject logoutJson(String username, String password, String session) {
+	public static JSONObject logoutJson(String username, String password,
+			String session) {
 		JSONObject json = new JSONObject();
 		try {
 			json.put("action", "logout");
@@ -46,6 +47,22 @@ public class RequestJsonFactory {
 		try {
 			json.put("username", username);
 			json.put("session", session);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+
+	public static JSONObject PostListJson(String username, String session,
+			String tid, String from, String to) {
+		JSONObject json = new JSONObject();
+		try {
+			json.put("action", "post");
+			json.put("username", username);
+			json.put("session", session);
+			json.put("tid", tid);
+			json.put("from", from);
+			json.put("to", to);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

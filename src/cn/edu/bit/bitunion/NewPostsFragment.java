@@ -5,11 +5,14 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import cn.edu.bit.bitunion.entities.LoginInfo;
 import cn.edu.bit.bitunion.entities.NewPost;
@@ -35,10 +38,12 @@ public class NewPostsFragment extends Fragment {
 	private NewPostsListAdapter mAdapter;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		View view = inflater.inflate(R.layout.fragment_new_posts, null);
-		mListView = (PullToRefreshListView) view.findViewById(R.id.new_posts_listview);
+		mListView = (PullToRefreshListView) view
+				.findViewById(R.id.new_posts_listview);
 		mAdapter = new NewPostsListAdapter(getActivity(), mDataList);
 		mListView.setAdapter(mAdapter);
 		mListView.setMode(Mode.PULL_FROM_START);
@@ -48,6 +53,26 @@ public class NewPostsFragment extends Fragment {
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				// TODO Auto-generated method stub
 				fresh();
+			}
+		});
+		final ListView mRefreshableView = mListView.getRefreshableView();
+		mRefreshableView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				// TODO Auto-generated method stub
+				position = position - mRefreshableView.getHeaderViewsCount();
+				Bundle bundle = new Bundle();
+				// bundle.putSerializable("thread",
+				// mDataList.get(position));
+				bundle.putString("tid", mDataList.get(position).getTid());
+
+				bundle.putString("tid_sum", mDataList.get(position)
+						.getTid_sum());
+				Intent intent = new Intent(getActivity(), ThreadActivity.class);
+				intent.putExtras(bundle);
+				startActivity(intent);
 			}
 		});
 		return view;
@@ -69,17 +94,22 @@ public class NewPostsFragment extends Fragment {
 
 	private void getNewPostsList() {
 		if (((BaseActivity) getActivity()).checkConnection()) {
-			LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext().getLoginInfo();
+			LoginInfo loginInfo = ((BaseActivity) getActivity())
+					.getAppContext().getLoginInfo();
 			((BaseActivity) getActivity()).showLoadingDialog();
-			RequestQueueManager.getInstance(getActivity()).postJsonRequest(GlobalUrls.getNewPostsUrl(),
-					RequestJsonFactory.newPostsJson(loginInfo.getUsername(), loginInfo.getSession()), new Listener<JSONObject>() {
+			RequestQueueManager.getInstance(getActivity()).postJsonRequest(
+					GlobalUrls.getNewPostsUrl(),
+					RequestJsonFactory.newPostsJson(loginInfo.getUsername(),
+							loginInfo.getSession()),
+					new Listener<JSONObject>() {
 
 						@Override
 						public void onResponse(JSONObject response) {
 							// TODO Auto-generated method stub
 							((BaseActivity) getActivity()).hideLoadingDialog();
 							if (ResponseParser.isSuccess(response)) {
-								List<NewPost> newPostList = ResponseParser.parseNewPostList(response);
+								List<NewPost> newPostList = ResponseParser
+										.parseNewPostList(response);
 								mDataList.addAll(newPostList);
 								mAdapter.notifyDataSetChanged();
 							}
@@ -90,7 +120,8 @@ public class NewPostsFragment extends Fragment {
 						public void onErrorResponse(VolleyError error) {
 							// TODO Auto-generated method stub
 							((BaseActivity) getActivity()).hideLoadingDialog();
-							ToastHelper.showToast(getActivity(), error.toString());
+							ToastHelper.showToast(getActivity(),
+									error.toString());
 						}
 
 					});
@@ -99,15 +130,20 @@ public class NewPostsFragment extends Fragment {
 
 	private void fresh() {
 		if (((BaseActivity) getActivity()).checkConnection()) {
-			LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext().getLoginInfo();
-			RequestQueueManager.getInstance(getActivity()).postJsonRequest(GlobalUrls.getNewPostsUrl(),
-					RequestJsonFactory.newPostsJson(loginInfo.getUsername(), loginInfo.getSession()), new Listener<JSONObject>() {
+			LoginInfo loginInfo = ((BaseActivity) getActivity())
+					.getAppContext().getLoginInfo();
+			RequestQueueManager.getInstance(getActivity()).postJsonRequest(
+					GlobalUrls.getNewPostsUrl(),
+					RequestJsonFactory.newPostsJson(loginInfo.getUsername(),
+							loginInfo.getSession()),
+					new Listener<JSONObject>() {
 
 						@Override
 						public void onResponse(JSONObject response) {
 							// TODO Auto-generated method stub
 							if (ResponseParser.isSuccess(response)) {
-								List<NewPost> newPostList = ResponseParser.parseNewPostList(response);
+								List<NewPost> newPostList = ResponseParser
+										.parseNewPostList(response);
 								mDataList.clear();
 								mDataList.addAll(newPostList);
 								mAdapter.notifyDataSetChanged();
@@ -120,7 +156,8 @@ public class NewPostsFragment extends Fragment {
 						public void onErrorResponse(VolleyError error) {
 							// TODO Auto-generated method stub
 							mListView.onRefreshComplete();
-							ToastHelper.showToast(getActivity(), error.toString());
+							ToastHelper.showToast(getActivity(),
+									error.toString());
 						}
 
 					});
