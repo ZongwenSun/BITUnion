@@ -33,12 +33,12 @@ public class WelcomeActivity extends BaseActivity {
 
 		@Override
 		public void handleMessage(Message msg) {
-			boolean hasLogin = LoginManager.getInstance(getAppContext()).hasLogin();
+			boolean hasLogin = LoginManager.getInstance().hasLogin();
 			if (hasLogin) {
 				if (checkConnection()) {
-					LoginManager loginManager = LoginManager.getInstance(getAppContext());
+					LoginManager loginManager = LoginManager.getInstance();
 
-					RequestQueueManager.getInstance(getAppContext()).postJsonRequest(GlobalUrls.getLoginUrl(),
+					RequestQueueManager.getInstance().postJsonRequest(GlobalUrls.getLoginUrl(),
 							RequestJsonFactory.loginJson(loginManager.getUserName(), loginManager.getPassword()), new Listener<JSONObject>() {
 
 								@Override

@@ -51,7 +51,7 @@ public class LoginActivity extends BaseActivity {
 				} else {
 					if (checkConnection()) {
 						showLoadingDialog();
-						RequestQueueManager.getInstance(getAppContext()).postJsonRequest(GlobalUrls.getLoginUrl(), RequestJsonFactory.loginJson(username, password),
+						RequestQueueManager.getInstance().postJsonRequest(GlobalUrls.getLoginUrl(), RequestJsonFactory.loginJson(username, password),
 								new Listener<JSONObject>() {
 
 									@Override
@@ -60,7 +60,7 @@ public class LoginActivity extends BaseActivity {
 										hideLoadingDialog();
 
 										if (ResponseParser.isSuccess(response)) {
-											LoginManager.getInstance(getAppContext()).saveLoginInfo(username, password);
+											LoginManager.getInstance().saveLoginInfo(username, password);
 											getAppContext().setLoginInfo(ResponseParser.parseLoginInfo(response));
 											jumpToPage(HomeActivity.class, null, true);
 										} else {

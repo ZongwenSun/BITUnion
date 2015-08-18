@@ -17,19 +17,21 @@ public class RequestQueueManager {
 	private static RequestQueueManager instance = null;
 	private RequestQueue mRequestQueue = null;
 
-	RequestQueueManager(Context context) {
+	private RequestQueueManager(Context context) {
 		mRequestQueue = Volley.newRequestQueue(context);
 	}
 
-	public static RequestQueueManager getInstance(Context context) {
+	public static RequestQueueManager getInstance() {
 		if (instance == null) {
-			synchronized (RequestQueueManager.class) {
-				if (instance == null) {
-					instance = new RequestQueueManager(context);
-				}
-			}
+			throw new RuntimeException("RequestQueueManager not initialized");
 		}
 		return instance;
+	}
+
+	public static void init(Context context) {
+		if (instance == null) {
+			instance = new RequestQueueManager(context);
+		}
 	}
 
 	public RequestQueue getRequestQueue() {

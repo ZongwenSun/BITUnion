@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import cn.edu.bit.bitunion.entities.LoginInfo;
 import cn.edu.bit.bitunion.global.LoginManager;
 import cn.edu.bit.bitunion.global.NetworkManager;
+import cn.edu.bit.bitunion.global.SharedPrefrenceUtil;
 import cn.edu.bit.bitunion.network.RequestQueueManager;
 import cn.edu.bit.bitunion.tools.LogUtils;
 
@@ -27,11 +28,14 @@ public class MainApplication extends Application {
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		mLoginManager = LoginManager.getInstance(this);
-		mNetworkManager = NetworkManager.getInstance(this);
-		mRequestQueueManager = RequestQueueManager.getInstance(this);
+		LoginManager.init(this);
+		mLoginManager = LoginManager.getInstance();
+		NetworkManager.init(this);
+		mNetworkManager = NetworkManager.getInstance();
+		RequestQueueManager.init(this);
+		mRequestQueueManager = RequestQueueManager.getInstance();
 		mRequestQueueManager.start();
-
+		SharedPrefrenceUtil.init(this);
 		// ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(this));
 		initImageLoader(getApplicationContext());
 		registerReceiver(mNetworkManager, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));

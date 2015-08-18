@@ -22,7 +22,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".WelcomeActivity"
+            android:name="cn.edu.bit.bitunion.WelcomeActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask" >
             <intent-filter>
@@ -32,15 +32,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="cn.edu.bit.bitunion.LoginActivity"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
-            android:name=".HomeActivity"
+            android:name="cn.edu.bit.bitunion.HomeActivity"
             android:launchMode="singleTask"
             android:theme="@style/StyledIndicators" />
-        <activity android:name=".ForumActivity" />
-        <activity android:name=".ThreadActivity"/>
+        <activity android:name="cn.edu.bit.bitunion.ForumActivity" />
+        <activity android:name="cn.edu.bit.bitunion.ThreadActivity" />
     </application>
 
 </manifest>

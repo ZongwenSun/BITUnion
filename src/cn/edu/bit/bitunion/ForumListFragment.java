@@ -91,7 +91,7 @@ public class ForumListFragment extends Fragment {
 
 		LoginInfo loginInfo = ((BaseActivity) getActivity()).getAppContext().getLoginInfo();
 		((BaseActivity) getActivity()).showLoadingDialog();
-		RequestQueueManager.getInstance(getActivity()).postJsonRequest(GlobalUrls.getForumListUrl(),
+		RequestQueueManager.getInstance().postJsonRequest(GlobalUrls.getForumListUrl(),
 				RequestJsonFactory.forumListJson(loginInfo.getUsername(), loginInfo.getSession()), new Listener<JSONObject>() {
 
 					@Override

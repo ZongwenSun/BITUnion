@@ -1,5 +1,6 @@
 package cn.edu.bit.bitunion.global;
 
+import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,12 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import cn.edu.bit.bitunion.tools.LogUtils;
 
+/**
+ * 用来更新网络状态，根据网络连接自动切换校内校外访问模式
+ * 
+ * @author szw
+ * 
+ */
 public class NetworkManager extends BroadcastReceiver {
 	private static final String TAG = "NetworkManager";
 	private static NetworkManager instance = null;
@@ -17,15 +24,17 @@ public class NetworkManager extends BroadcastReceiver {
 	private boolean isNetAvailable = false;
 	private boolean isConnected = false;
 
-	public static NetworkManager getInstance(Context context) {
+	public static NetworkManager getInstance() {
 		if (instance == null) {
-			synchronized (NetworkManager.class) {
-				if (instance == null) {
-					instance = new NetworkManager(context);
-				}
-			}
+			throw new RuntimeException("NetworkManager not initialized!");
 		}
 		return instance;
+	}
+
+	public static void init(Application appContext) {
+		if (instance == null) {
+			instance = new NetworkManager(appContext);
+		}
 	}
 
 	private NetworkManager(Context context) {

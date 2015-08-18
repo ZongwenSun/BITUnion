@@ -82,7 +82,7 @@ public class BaseActivity extends ActionBarActivity {
 	}
 
 	protected boolean checkConnection() {
-		if (NetworkManager.getInstance(this).isConnected()) {
+		if (NetworkManager.getInstance().isConnected()) {
 			return true;
 		} else {
 			ToastHelper.showToast(this, "沒有网络连接，请检查网络设置");
