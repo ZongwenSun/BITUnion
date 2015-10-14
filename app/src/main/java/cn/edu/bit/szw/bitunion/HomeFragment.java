@@ -18,7 +18,7 @@ public class HomeFragment extends BaseFragment {
 	@Override
 	protected View createContentView(LayoutInflater inflater, Bundle savedInstanceState) {
 		mTitle.setText(getString(R.string.app_name));
-		View view = inflater.inflate(R.layout.activity_home, null);
+		View view = inflater.inflate(R.layout.home_fragment, null);
 		mPager = (ViewPager) view.findViewById(R.id.pager);
 		mPager.setAdapter(new TabsAdapter(getFragmentManager()));
 		// Bind the title indicator to the adapter

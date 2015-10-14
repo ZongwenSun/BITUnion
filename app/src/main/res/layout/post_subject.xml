@@ -3,6 +3,43 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/avadarImageView"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/icon36"
+            android:layout_height="@dimen/icon36"
+            android:src="@drawable/ic_launcher"/>
+        <RelativeLayout
+            android:layout_toRightOf="@id/avadarImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/authorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="孙宗文"/>
+
+            <TextView
+                android:layout_toRightOf="@id/authorTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/post_author"/>
+
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2015-10-12"
+                android:layout_below="@id/authorTextView"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
     <TextView
           android:id="@+id/post_subject_textview"
           android:layout_width="match_parent"

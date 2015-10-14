@@ -15,7 +15,7 @@ public class ForumActivity extends BaseActivity {
 	protected void onCreate(Bundle bundle) {
 		// TODO Auto-generated method stub
 		super.onCreate(bundle);
-		setContentView(R.layout.activity_forum);
+		setContentView(R.layout.forum_fragment);
 		mForum = (Forum) getIntent().getSerializableExtra("forum");
 		initUI();
 	}
