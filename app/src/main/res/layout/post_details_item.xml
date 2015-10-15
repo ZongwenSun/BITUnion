@@ -1,38 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-      <LinearLayout        
-        android:orientation="horizontal"
-        android:layout_width="match_parent" 
-        android:layout_height="match_parent"
-      >
-      <TextView 
-           android:id="@+id/post_author"
-           android:layout_width="match_parent" 
-           android:layout_height="wrap_content"/>
-      <TextView 
-           android:id="@+id/post_level"
-           android:layout_width="match_parent" 
-           android:layout_height="wrap_content"
-          />
-         <TextView 
-           android:id="@+id/post_reply_time"
-           android:layout_width="match_parent" 
-           android:layout_height="wrap_content"
-          />
-    </LinearLayout>
-     <TextView 
-           android:id="@+id/post_content"
-           android:layout_width="match_parent" 
-           android:layout_height="wrap_content"
-          />
-     <Button 
-           android:id="@+id/post_reply_button"
-           android:layout_width="match_parent" 
-           android:layout_height="wrap_content"
-           android:gravity="right|center_vertical"
-         />
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding16">
+
+        <ImageView
+            android:id="@+id/avadar_iv"
+            android:layout_width="@dimen/icon32"
+            android:layout_height="@dimen/icon32"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/padding12"
+            android:src="@drawable/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@id/avadar_iv">
+
+                <TextView
+                    android:id="@+id/author_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="孙宗文"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/t14" />
+
+                <TextView
+                    android:id="@+id/author_label_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding12"
+                    android:layout_toRightOf="@id/author_tv"
+                    android:background="@color/main_blue"
+                    android:text="@string/post_author"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/t12" />
+
+                <TextView
+                    android:id="@+id/floorNo_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/author_tv"
+                    android:layout_marginTop="4dp"
+                    android:text="第2楼"
+                    android:textColor="@color/t_desc"
+                    android:textSize="@dimen/t12" />
+
+                <TextView
+                    android:id="@+id/time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/floorNo_tv"
+                    android:layout_marginLeft="@dimen/padding12"
+                    android:layout_toRightOf="@id/floorNo_tv"
+                    android:text="2015-10-12"
+                    android:textColor="@color/t_desc"
+                    android:textSize="@dimen/t12" />
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="32dp"
+                    android:id="@+id/reply_iv"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"/>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/post_subject_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/t_title"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold"
+            android:textSize="@dimen/t14" />
+
+        <TextView
+            android:id="@+id/post_message_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/t_title"
+            android:textSize="@dimen/t12" />
+
+        <ImageView
+            android:id="@+id/attach_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divider"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"></LinearLayout>
 </LinearLayout>

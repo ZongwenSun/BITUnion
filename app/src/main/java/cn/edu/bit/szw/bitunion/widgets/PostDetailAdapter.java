@@ -1,22 +1,40 @@
 package cn.edu.bit.szw.bitunion.widgets;
 
+import java.text.DateFormat;
+import java.text.FieldPosition;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import android.content.Context;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
+
+import org.w3c.dom.Text;
+
 import cn.edu.bit.szw.bitunion.R;
 import cn.edu.bit.szw.bitunion.entities.Post;
+import cn.edu.bit.szw.bitunion.tools.StringUtils;
 
 public class PostDetailAdapter extends BaseAdapter {
+	private static int ITEM_VIEW_TYPE_AUTHOR = 0;
+	private static int ITEM_VIEW_TYPE_REPLY = 1;
 
 	private List<Post> mData;
 	private final Context context;
 	private final LayoutInflater inflater;
+
+	private String authorId;
 
 	public PostDetailAdapter(Context context, List<Post> data) {
 		this.mData = data;
@@ -27,90 +45,106 @@ public class PostDetailAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return mData.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
 		return mData.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		// View rowView = convertView;
+	public int getViewTypeCount() {
+		return 2;
+	}
 
+	@Override
+	public int getItemViewType(int position) {
 		if (position == 0) {
-			View firstView = convertView;
-			firstView = null;
-			if (firstView == null) {
-				firstView = inflater.inflate(R.layout.post_subject, null);
-				ViewHolder holder = new ViewHolder();
-				holder.postSubjectText = (TextView) firstView
-						.findViewById(R.id.post_subject_textview);
-				holder.forumNameText = (TextView) firstView
-						.findViewById(R.id.forum_name_textview);
-				holder.replyTotalButton = (Button) firstView
-						.findViewById(R.id.reply_totol_button);
-				firstView.setTag(holder);
-			}
-			Post post = mData.get(position);
-			ViewHolder holder = (ViewHolder) firstView.getTag();
-			holder.postSubjectText.setText(post.subject);
-			holder.forumNameText.setText("论坛");
-			convertView = firstView;
+			return ITEM_VIEW_TYPE_AUTHOR;
+		}
+		else {
+			return ITEM_VIEW_TYPE_REPLY;
+		}
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View view = convertView;
+		Post post = mData.get(position);
+		if (getItemViewType(position) == ITEM_VIEW_TYPE_AUTHOR) {
+			view = inflater.inflate(R.layout.post_subject, null);
+			ImageView avatarIV = (ImageView) view.findViewById(R.id.avadar_iv);
+			TextView authorTv = (TextView) view.findViewById(R.id.author_tv);
+			TextView timeTv = (TextView) view.findViewById(R.id.time_tv);
+			TextView subjectTv = (TextView) view.findViewById(R.id.post_subject_tv);
+			TextView messageTv = (TextView) view.findViewById(R.id.post_message_tv);
+
+			authorTv.setText(post.author);
+			subjectTv.setText(post.subject);
+			timeTv.setText(getTime(post.dateline));
+			messageTv.setText(Html.fromHtml(post.message));
+			authorId = post.authorid;
 		}
 
 		else {
-			View otherView = convertView;
-			otherView = null;
-			if (otherView == null) {
-				otherView = inflater.inflate(R.layout.post_details_item, null);
-				ItemHolder holder = new ItemHolder();
-				holder.postAuthorText = (TextView) otherView
-						.findViewById(R.id.post_author);
-				holder.postLevelText = (TextView) otherView
-						.findViewById(R.id.post_level);
-				holder.postReplyTimeText = (TextView) otherView
-						.findViewById(R.id.post_reply_time);
-				holder.postContentText = (TextView) otherView
-						.findViewById(R.id.post_content);
-				holder.postReplyButton = (Button) otherView
-						.findViewById(R.id.post_reply_button);
-				otherView.setTag(holder);
+			ViewHolder holder;
+			if (view == null) {
+				view = inflater.inflate(R.layout.post_details_item, null);
+				holder = new ViewHolder();
+				holder.avatarIv = (ImageView) view.findViewById(R.id.avadar_iv);
+				holder.authorTv = (TextView) view.findViewById(R.id.author_tv);
+				holder.authorLabelTv = (TextView) view.findViewById(R.id.author_label_tv);
+				holder.floorNoTv = (TextView) view.findViewById(R.id.floorNo_tv);
+				holder.timeTv = (TextView) view.findViewById(R.id.time_tv);
+				holder.subjectTv = (TextView) view.findViewById(R.id.post_subject_tv);
+				holder.messageTv = (TextView) view.findViewById(R.id.post_message_tv);
+				view.setTag(holder);
 			}
-			Post post = mData.get(position);
-			ItemHolder holder = (ItemHolder) otherView.getTag();
-			holder.postAuthorText.setText(post.author);
-			holder.postLevelText.setText("楼");
-			holder.postReplyTimeText.setText("00:00");
-			holder.postContentText.setText(post.message);
 
-			convertView = otherView;
+			holder = (ViewHolder)view.getTag();
+			holder.authorTv.setText(post.author);
+			if (TextUtils.isEmpty(post.subject)) {
+				holder.subjectTv.setVisibility(View.GONE);
+			}
+			else {
+				holder.subjectTv.setVisibility(View.VISIBLE);
+				holder.subjectTv.setText(post.subject);
+			}
+
+			holder.floorNoTv.setText(context.getString(R.string.floor_format, position + 1));
+			holder.timeTv.setText(getTime(post.dateline));
+			holder.messageTv.setText(Html.fromHtml(post.message));
+			if (TextUtils.equals(authorId, post.authorid)) {
+				holder.authorLabelTv.setVisibility(View.VISIBLE);
+			}
+			else {
+				holder.authorLabelTv.setVisibility(View.GONE);
+			}
+
 		}
 
-		return convertView;
+		return view;
 	}
 
-	static class ViewHolder {
-		public TextView postSubjectText;
-		public TextView forumNameText;
-		public Button replyTotalButton;
+	private String getTime(String time) {
+		Date date = new Date(Long.valueOf(time)*1000);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format.format(date);
 	}
-
-	static class ItemHolder {
-		public TextView postAuthorText;
-		public TextView postLevelText;
-		public TextView postReplyTimeText;
-		public TextView postContentText;
-		public Button postReplyButton;
+	public static class ViewHolder{
+		public ImageView avatarIv;
+		public TextView authorTv;
+		public TextView authorLabelTv;
+		public TextView subjectTv;
+		public TextView messageTv;
+		public TextView timeTv;
+		public TextView replyIv;
+		public TextView floorNoTv;
 	}
 }

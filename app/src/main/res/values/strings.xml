@@ -36,4 +36,5 @@
     <!-- thread -->
     <string name="thread_subject">主题</string>
     <string name="post_author">楼主</string>
+    <string name="floor_format">第%d楼</string>
 </resources>

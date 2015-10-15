@@ -1,65 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/avadarImageView"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_width="@dimen/icon36"
-            android:layout_height="@dimen/icon36"
-            android:src="@drawable/ic_launcher"/>
-        <RelativeLayout
-            android:layout_toRightOf="@id/avadarImageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/authorTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="孙宗文"/>
-
-            <TextView
-                android:layout_toRightOf="@id/authorTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/post_author"/>
-
-            <TextView
-                android:id="@+id/timeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2015-10-12"
-                android:layout_below="@id/authorTextView"/>
-
-        </RelativeLayout>
-    </RelativeLayout>
-    <TextView
-          android:id="@+id/post_subject_textview"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          />
-    <LinearLayout        
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_width="match_parent" 
-        android:layout_height="match_parent"
+        android:padding="@dimen/padding16">
+        <ImageView
+            android:id="@+id/avadar_iv"
+            android:layout_width="@dimen/icon32"
+            android:layout_height="@dimen/icon32"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/padding12"
+            android:src="@drawable/ic_launcher"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_toRightOf="@id/avadar_iv"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/author_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/t14"
+                    android:textColor="@color/red"
+                    android:text="孙宗文"/>
+
+                <TextView
+                    android:layout_toRightOf="@id/author_tv"
+                    android:layout_marginLeft="@dimen/padding12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/main_blue"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/t12"
+                    android:text="@string/post_author"/>
+
+                <TextView
+                    android:id="@+id/time_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/t_desc"
+                    android:text="2015-10-12"
+                    android:textSize="@dimen/t12"
+                    android:layout_below="@id/author_tv"
+                    android:layout_marginTop="4dp"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/padding16"
+        android:orientation="vertical">
+
+        <TextView
+            android:textColor="@color/t_title"
+            android:id="@+id/post_subject_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/t14"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"
+            />
+
+        <TextView
+            android:textColor="@color/t_title"
+            android:id="@+id/post_message_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/t12"
+            />
+
+        <ImageView
+            android:id="@+id/attach_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divider"
       >
-      <TextView 
-           android:id="@+id/forum_name_textview"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          />
-      <Button 
-          android:id="@+id/reply_totol_button"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:gravity="right|center_vertical"
-          />
    </LinearLayout>
 </LinearLayout>

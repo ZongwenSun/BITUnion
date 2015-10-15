@@ -22,7 +22,7 @@
         android:orientation="horizontal" >
 
         <TextView
-            android:id="@+id/forum_name_textview"
+            android:id="@+id/post_message_tv"
             style="@style/BottomLineText.Blue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             style="@style/BottomLineText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/forum_name_textview"
+            android:layout_toRightOf="@id/post_message_tv"
             android:text="作者" >
         </TextView>
 

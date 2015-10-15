@@ -48,7 +48,7 @@ public class NewPostsListAdapter extends BaseAdapter {
 			rowView = inflater.inflate(R.layout.new_posts_list_item, null);
 			ViewHolder holder = new ViewHolder();
 			holder.postNameText = (TextView) rowView.findViewById(R.id.post_name_textview);
-			holder.forumNameText = (TextView) rowView.findViewById(R.id.forum_name_textview);
+			holder.forumNameText = (TextView) rowView.findViewById(R.id.post_message_tv);
 			holder.authorNameText = (TextView) rowView.findViewById(R.id.post_author_name_textview);
 			holder.replyCountText = (TextView) rowView.findViewById(R.id.reply_count_textview);
 			rowView.setTag(holder);

@@ -23,6 +23,6 @@
 
     <dimen name="icon64">64dp</dimen>
     <dimen name="icon48">48dp</dimen>
-    <dimen name="icon36">36dp</dimen>
+    <dimen name="icon32">32dp</dimen>
 
 </resources>
