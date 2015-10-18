@@ -120,6 +120,7 @@ public class ResponseParser {
 				Post post = JSON.parseObject(array.getJSONObject(i).toString(),
 						Post.class);
 				Decoder.decode(post);
+				post.parseMessage();
 				result.add(post);
 			}
 		} catch (JSONException e) {

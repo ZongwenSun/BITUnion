@@ -4,8 +4,8 @@ public class GlobalUrls {
 	// public static final String BASE_
 	public static final String BASE_URL_IN_SCHOOL = "http://www.bitunion.org/";
 	public static final String BASE_URL_OUT_SCHOOL = "http://out.bitunion.org/";
-	private static String BASE_API =BASE_URL_OUT_SCHOOL + "open_api/";
-	private static String BASE_URL;
+	public static String BASE_URL = BASE_URL_OUT_SCHOOL;
+	public static String BASE_API =BASE_URL + "open_api/";
 
 	public static void setInSchool(boolean isInSchool) {
 		//if (isInSchool) {

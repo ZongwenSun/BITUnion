@@ -86,6 +86,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="60dp"
+        android:layout_marginRight="@dimen/activity_padding"
         android:orientation="vertical">
 
         <TextView
@@ -96,6 +97,14 @@
             android:layout_marginBottom="8dp"
             android:textStyle="bold"
             android:textSize="@dimen/t14" />
+
+        <TextView
+            android:id="@+id/post_quote_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="4dp"
+            android:text="引用@小鸡毛:反对森公司过速度三点过萨德光速度大概撒个三点过"
+            android:background="@drawable/bg_quote"/>
 
         <TextView
             android:id="@+id/post_message_tv"
