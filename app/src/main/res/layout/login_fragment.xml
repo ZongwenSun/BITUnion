@@ -16,8 +16,7 @@
             android:layout_marginTop="40dp"
             android:hint="用户名"
             android:maxLines="1"
-            android:singleLine="true"
-            android:text="smartwen" />
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/login_password_edit"
@@ -26,8 +25,7 @@
             android:hint="密码"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:singleLine="true"
-            android:text="szw21035" />
+            android:singleLine="true" />
 
         <Button
             android:id="@+id/login_sign_in_button"
