@@ -1,8 +1,5 @@
 package cn.edu.bit.szw.bitunion.base;
 
-import android.content.Intent;
-import android.media.Image;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,10 +10,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.util.concurrent.Callable;
 
 import cn.edu.bit.szw.bitunion.R;
 
@@ -37,6 +30,7 @@ public abstract class BaseFragment extends Fragment {
         mLeft = (ImageView) view.findViewById(R.id.base_titlebar_left);
         mContent = (FrameLayout) view.findViewById(R.id.base_fragment_content);
         View contentView = createContentView(inflater, savedInstanceState);
+        //ButterKnife.bind(contentView);
         FrameLayout.LayoutParams contentLp = new FrameLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
