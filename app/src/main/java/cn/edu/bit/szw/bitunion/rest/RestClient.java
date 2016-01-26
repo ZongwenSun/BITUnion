@@ -1,6 +1,7 @@
 package cn.edu.bit.szw.bitunion.rest;
 
-import retrofit.GsonConverterFactory;
+import org.json.JSONObject;
+
 import retrofit.Retrofit;
 import retrofit.RxJavaCallAdapterFactory;
 
@@ -15,7 +16,9 @@ public class RestClient {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverter(String.class, new StringConverter())
+                .addConverter(JSONObject.class, new JSONConverter())
+                //.addConverterFactory(GsonConverterFactory.create())
                 .build();
         mBUApi = retrofit.create(BUApi.class);
     }

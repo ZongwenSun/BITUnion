@@ -2,20 +2,22 @@ package cn.edu.bit.szw.bitunion;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.squareup.okhttp.ResponseBody;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.edu.bit.szw.bitunion.base.BaseFragment;
 import cn.edu.bit.szw.bitunion.global.LoginManager;
+import cn.edu.bit.szw.bitunion.global.ResponseParser;
 import cn.edu.bit.szw.bitunion.rest.RestClient;
+import cn.edu.bit.szw.bitunion.tools.LogUtils;
 import cn.edu.bit.szw.bitunion.tools.ToastHelper;
 import cn.edu.bit.szw.bitunion.widgets.LoadingView;
 import rx.Subscriber;
@@ -95,38 +97,43 @@ public class LoginFragment extends BaseFragment {
 			return;
 		}
 		mLoadingView.startLoading(true);
+
+		JSONObject body = new JSONObject();
 		try {
-
-			RestClient.getInstance().getApi().login("login", username, password)
-					.subscribeOn(Schedulers.io())
-					.observeOn(AndroidSchedulers.mainThread())
-					.subscribe(new Subscriber<ResponseBody>() {
-						@Override
-						public void onCompleted() {
-							mLoadingView.stopLoading();
-						}
-
-						@Override
-						public void onError(Throwable e) {
-							ToastHelper.show(e.toString());
-							mLoadingView.stopLoading();
-						}
-
-						
-						@Override
-						public void onNext(ResponseBody response) {
-							ToastHelper.show("hello");
-							//MainApplication.instance.setLoginInfo(ResponseParser.parseLoginInfo(response));
-							LoginManager.getInstance().saveLoginInfo(username, password);
-							startAndFinishSelf(HomeFragment.class, new Bundle());
-						}
-					});
-		}
-		catch (Exception e){
+			body.put("action", "login");
+			body.put("username", username);
+			body.put("password", password);
+		} catch (JSONException e) {
 			e.printStackTrace();
-			Log.e(TAG, e.toString());
 		}
+		LogUtils.log(body.toString());
+		RestClient.getInstance().getApi().login(body.toString())
+				.subscribeOn(Schedulers.io())
+				.observeOn(AndroidSchedulers.mainThread())
+				.subscribe(new Subscriber<JSONObject>() {
+							   @Override
+							   public void onCompleted() {
+								   mLoadingView.stopLoading();
+							   }
 
+							   @Override
+							   public void onError(Throwable e) {
+								   LogUtils.log("error------" + e.toString());
+//							ToastHelper.show(e.toString());
+								   mLoadingView.stopLoading();
+							   }
+
+
+							   @Override
+							   public void onNext(JSONObject response) {
+								   ToastHelper.show("hello");
+								   MainApplication.instance.setLoginInfo(ResponseParser.parseLoginInfo(response));
+								   LoginManager.getInstance().saveLoginInfo(username, password);
+								   startAndFinishSelf(HomeFragment.class, new Bundle());
+							   }
+						   }
+
+				);
 	}
 
 	@Override

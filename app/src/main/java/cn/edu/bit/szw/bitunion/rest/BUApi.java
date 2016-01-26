@@ -1,10 +1,10 @@
 package cn.edu.bit.szw.bitunion.rest;
 
 
-import com.squareup.okhttp.ResponseBody;
+import org.json.JSONObject;
 
+import retrofit.http.Body;
 import retrofit.http.POST;
-import retrofit.http.Query;
 import rx.Observable;
 
 /**
@@ -12,10 +12,8 @@ import rx.Observable;
  */
 public interface BUApi {
     @POST("bu_logging.php")
-    Observable<ResponseBody> login(
-            @Query("action") String action,
-            @Query("username")String username,
-            @Query("password") String password);
+    Observable<JSONObject> login(
+            @Body String body);
     //@POST("/")
 
 }
