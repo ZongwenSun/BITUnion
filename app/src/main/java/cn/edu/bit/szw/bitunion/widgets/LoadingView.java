@@ -168,7 +168,7 @@ public class LoadingView extends RelativeLayout {
             return;
         }
         if (TextUtils.isEmpty(btnText)) {
-           // btnText = getContext().getString(R.string.try_again);
+           // btnText = getContext().getJson(R.string.try_again);
         }
         showError(msg, false, btnText, btnCallback);
     }

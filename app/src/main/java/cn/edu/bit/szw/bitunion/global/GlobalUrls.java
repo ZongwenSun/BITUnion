@@ -41,7 +41,9 @@ public class GlobalUrls {
 	}
 
 	public static String getImageUrl(String url) {
-
+		if (url.startsWith("http://bitunion.org/")) {
+			url = url.substring("http://bitunion.org/".length());
+		}
 		return BASE_URL_OUT_SCHOOL + url;
 	}
 }

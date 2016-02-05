@@ -30,13 +30,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".base.RootActivity">
-            <intent-filter>
-                <action android:name="cn.edu.bit.szw.bitunion.rootactivity"/>
-                <data android:scheme="fragment"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+        <activity android:name=".LoginActivity">
         </activity>
+
+        <activity android:name=".HomeFragment">
+        </activity>
+        <activity android:name=".ThreadActivity">
+        </activity>
+
     </application>
 
 </manifest>

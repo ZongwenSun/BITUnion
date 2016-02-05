@@ -18,111 +18,130 @@ import cn.edu.bit.szw.bitunion.global.GlobalUrls;
 import cn.edu.bit.szw.bitunion.tools.LogUtils;
 
 public class ForumExpandableListAdapter extends BaseExpandableListAdapter {
-	private List<Forum> mForumList;
-	private LayoutInflater mInflater;
+    private List<Forum> mForumList;
+    private LayoutInflater mInflater;
+    protected boolean mDataValid;
 
-	public ForumExpandableListAdapter(Context context, List<Forum> forumList) {
-		mForumList = forumList;
-		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	}
+    public ForumExpandableListAdapter(Context context) {
+        mDataValid = false;
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
 
-	@Override
-	public int getGroupCount() {
-		// TODO Auto-generated method stub
-		return mForumList.size();
-	}
+    public void updateData(List<Forum> data) {
+        if (data != null) {
+            mDataValid = true;
+            mForumList = data;
+            notifyDataSetChanged();
+        } else {
+            mDataValid = false;
+            notifyDataSetInvalidated();
+        }
+    }
 
-	@Override
-	public int getChildrenCount(int groupPosition) {
-		// TODO Auto-generated method stub
-		return mForumList.get(groupPosition).subForumList.size();
-	}
+    @Override
+    public int getGroupCount() {
+        if (mDataValid && mForumList != null) {
+            return mForumList.size();
+        } else {
+            return 0;
+        }
+    }
 
-	@Override
-	public Object getGroup(int groupPosition) {
-		// TODO Auto-generated method stub
-		return mForumList.get(groupPosition);
-	}
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        if (mDataValid && mForumList != null && mForumList.get(groupPosition) != null) {
+            return mForumList.get(groupPosition).subForumList.size();
+        } else {
+            return 0;
+        }
+    }
 
-	@Override
-	public Object getChild(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
-		return mForumList.get(groupPosition).subForumList.get(childPosition);
-	}
+    @Override
+    public Object getGroup(int groupPosition) {
+        if (mDataValid && mForumList != null) {
+            return mForumList.get(groupPosition);
+        } else {
+            return null;
+        }
+    }
 
-	@Override
-	public long getGroupId(int groupPosition) {
-		// TODO Auto-generated method stub
-		return groupPosition;
-	}
+    @Override
+    public Object getChild(int groupPosition, int childPosition) {
+        if (mDataValid && mForumList != null && mForumList.get(groupPosition) != null) {
+            return mForumList.get(groupPosition).subForumList.get(childPosition);
+        } else {
+            return null;
+        }
+    }
 
-	@Override
-	public long getChildId(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
-		return childPosition;
-	}
+    @Override
+    public long getGroupId(int groupPosition) {
+        if (mDataValid) {
+            return groupPosition;
+        } else {
+            return 0;
+        }
+    }
 
-	@Override
-	public boolean hasStableIds() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        if (mDataValid) {
+            return childPosition;
+        } else {
+            return 0;
+        }
+    }
 
-	@Override
-	public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		View view = convertView;
-		GroupHolder holder;
-		if (view == null) {
-			view = mInflater.inflate(R.layout.forumlistview_group, null);
-			holder = new GroupHolder();
-			holder.grouptext = (TextView) view.findViewById(R.id.listgroup);
-			// Typeface typeface =
-			// Typeface.createFromAsset(getActivity().getAssets(),
-			// "fonts/xingkai.ttf");
-			// holder.grouptext.setTypeface(typeface);
-			view.setTag(holder);
-		} else {
-			holder = (GroupHolder) view.getTag();
-		}
-		holder.grouptext.setText(mForumList.get(groupPosition).name);
-		return view;
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
 
-	}
+    @Override
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        if (!mDataValid) {
+            throw new IllegalStateException(
+                    "this should only be called when the data is valid");
+        }
+        View view = convertView;
+        if (view == null) {
+            view = mInflater.inflate(R.layout.forumlistview_group, null);
+        }
+        TextView groupNameText = (TextView) view.findViewById(R.id.forum_group_name_text);
+        ImageView arrowImg = (ImageView) view.findViewById(R.id.forum_group_arrow_img);
+        groupNameText.setText(mForumList.get(groupPosition).name);
+        if (isExpanded) {
+            arrowImg.setBackgroundResource(R.drawable.arrow_down);
+        } else {
+            arrowImg.setBackgroundResource(R.drawable.arrow_right);
+        }
+        return view;
 
-	@Override
-	public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		View view = convertView;
-		ChildHolder cholder;
-		if (view == null) {
-			view = mInflater.inflate(R.layout.forumlistview_children, null);
-			cholder = new ChildHolder();
-			cholder.imageView = (ImageView) view.findViewById(R.id.img);
-			cholder.childtext = (TextView) view.findViewById(R.id.listgroup);
-			view.setTag(cholder);
-		} else {
-			cholder = (ChildHolder) view.getTag();
-		}
-		Forum forum = mForumList.get(groupPosition).subForumList.get(childPosition);
-		LogUtils.log(forum.icon);
-		ImageLoader.getInstance().displayImage(GlobalUrls.getImageUrl(forum.icon), cholder.imageView);
-		cholder.childtext.setText(forum.name);
-		return view;
-	}
+    }
 
-	@Override
-	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		// TODO Auto-generated method stub
-		return true;
-	}
+    @Override
+    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        if (!mDataValid) {
+            throw new IllegalStateException(
+                    "this should only be called when the data is valid");
+        }
+        View view = convertView;
+        if (view == null) {
+            view = mInflater.inflate(R.layout.forumlistview_children, null);
+        }
 
-	static class GroupHolder {
-		TextView grouptext;
-	}
+        ImageView forumImg = (ImageView) view.findViewById(R.id.img);
+        TextView childForumNameText = (TextView) view.findViewById(R.id.forum_group_name_text);
+        Forum forum = mForumList.get(groupPosition).subForumList.get(childPosition);
 
-	static class ChildHolder {
-		ImageView imageView;
-		TextView childtext;
-	}
+        ImageLoader.getInstance().displayImage(GlobalUrls.getImageUrl(forum.icon), forumImg);
+        childForumNameText.setText(forum.name);
+        return view;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
 }
